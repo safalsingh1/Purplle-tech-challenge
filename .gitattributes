@@ -1,0 +1,14 @@
+# Normalize line endings to LF in the repo (prevents CRLF noise on Windows)
+* text=auto eol=lf
+# Binary files — never touch line endings
+*.pt binary
+*.mp4 binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.db binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary

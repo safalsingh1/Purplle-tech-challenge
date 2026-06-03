@@ -1,0 +1,235 @@
+{
+  "stores": {
+    "STORE_BLR_002": {
+      "name": "Apex Retail Bengaluru Central",
+      "city": "Bengaluru",
+      "open_hours": { "start": "10:00", "end": "21:00" },
+      "cameras": {
+        "CAM_ENTRY_01": {
+          "clip_file": "CAM 3 - entry.mp4",
+          "clip_file_legacy": "CAM 3.mp4",
+          "type": "entry_exit",
+          "description": "Main entry/exit threshold camera",
+          "entry_line_y_ratio": 0.55,
+          "zones": {
+            "ENTRY_THRESHOLD": {
+              "polygon": [[0.0, 0.45], [1.0, 0.45], [1.0, 0.65], [0.0, 0.65]],
+              "sku_zone": null,
+              "is_entry_zone": true
+            }
+          }
+        },
+        "CAM_FLOOR_01": {
+          "clip_file": "CAM 2 - zone.mp4",
+          "clip_file_legacy": "CAM 2.mp4",
+          "type": "main_floor",
+          "description": "Main floor zone coverage camera",
+          "zones": {
+            "SKINCARE": {
+              "polygon": [[0.0, 0.0], [0.45, 0.0], [0.45, 0.55], [0.0, 0.55]],
+              "sku_zone": "MOISTURISER"
+            },
+            "HAIRCARE": {
+              "polygon": [[0.45, 0.0], [1.0, 0.0], [1.0, 0.55], [0.45, 0.55]],
+              "sku_zone": "SHAMPOO"
+            },
+            "FRAGRANCES": {
+              "polygon": [[0.0, 0.55], [0.5, 0.55], [0.5, 1.0], [0.0, 1.0]],
+              "sku_zone": "PERFUME"
+            },
+            "WELLNESS": {
+              "polygon": [[0.5, 0.55], [1.0, 0.55], [1.0, 1.0], [0.5, 1.0]],
+              "sku_zone": "SUPPLEMENTS"
+            }
+          }
+        },
+        "CAM_BILLING_01": {
+          "clip_file": "CAM 5 - billing.mp4",
+          "clip_file_legacy": "CAM 1.mp4",
+          "type": "billing",
+          "description": "Billing counter and queue area camera",
+          "zones": {
+            "BILLING_COUNTER": {
+              "polygon": [[0.3, 0.0], [0.7, 0.0], [0.7, 0.45], [0.3, 0.45]],
+              "sku_zone": null,
+              "is_billing": true
+            },
+            "BILLING_QUEUE": {
+              "polygon": [[0.1, 0.45], [0.9, 0.45], [0.9, 1.0], [0.1, 1.0]],
+              "sku_zone": null,
+              "is_billing_queue": true
+            },
+            "IMPULSE_BUYS": {
+              "polygon": [[0.0, 0.0], [0.3, 0.0], [0.3, 1.0], [0.0, 1.0]],
+              "sku_zone": "CANDY_SNACKS"
+            }
+          }
+        },
+        "CAM_FLOOR_02": {
+          "clip_file": "CAM 1 - zone.mp4",
+          "clip_file_legacy": "CAM 4.mp4",
+          "type": "main_floor",
+          "description": "Secondary floor zone coverage camera",
+          "zones": {
+            "SKINCARE": {
+              "polygon": [[0.0, 0.0], [0.45, 0.0], [0.45, 0.55], [0.0, 0.55]],
+              "sku_zone": "MOISTURISER"
+            },
+            "HAIRCARE": {
+              "polygon": [[0.45, 0.0], [1.0, 0.0], [1.0, 0.55], [0.45, 0.55]],
+              "sku_zone": "SHAMPOO"
+            },
+            "FRAGRANCES": {
+              "polygon": [[0.0, 0.55], [0.5, 0.55], [0.5, 1.0], [0.0, 1.0]],
+              "sku_zone": "PERFUME"
+            },
+            "WELLNESS": {
+              "polygon": [[0.5, 0.55], [1.0, 0.55], [1.0, 1.0], [0.5, 1.0]],
+              "sku_zone": "SUPPLEMENTS"
+            }
+          }
+        }
+      }
+    },
+    "ST1008": {
+      "name": "Apex Retail Brigade Road",
+      "city": "Bengaluru",
+      "open_hours": { "start": "10:00", "end": "21:00" },
+      "cameras": {
+        "CAM_ENTRY_01": {
+          "clip_file": "entry 1.mp4",
+          "clip_file_legacy": "CAM 3.mp4",
+          "type": "entry_exit",
+          "description": "Main entry/exit threshold camera",
+          "entry_line_y_ratio": 0.55,
+          "zones": {
+            "ENTRY_THRESHOLD": {
+              "polygon": [[0.0, 0.45], [1.0, 0.45], [1.0, 0.65], [0.0, 0.65]],
+              "sku_zone": null,
+              "is_entry_zone": true
+            }
+          }
+        },
+        "CAM_ENTRY_02": {
+          "clip_file": "entry 2.mp4",
+          "clip_file_legacy": "CAM 4.mp4",
+          "type": "entry_exit",
+          "description": "Secondary entry/exit threshold camera",
+          "entry_line_y_ratio": 0.55,
+          "zones": {
+            "ENTRY_THRESHOLD": {
+              "polygon": [[0.0, 0.45], [1.0, 0.45], [1.0, 0.65], [0.0, 0.65]],
+              "sku_zone": null,
+              "is_entry_zone": true
+            }
+          }
+        },
+        "CAM_FLOOR_01": {
+          "clip_file": "zone.mp4",
+          "clip_file_legacy": "CAM 2.mp4",
+          "type": "main_floor",
+          "description": "Main floor zone coverage camera",
+          "zones": {
+            "SKINCARE": {
+              "polygon": [[0.0, 0.0], [0.45, 0.0], [0.45, 0.55], [0.0, 0.55]],
+              "sku_zone": "MOISTURISER"
+            },
+            "HAIRCARE": {
+              "polygon": [[0.45, 0.0], [1.0, 0.0], [1.0, 0.55], [0.45, 0.55]],
+              "sku_zone": "SHAMPOO"
+            },
+            "FRAGRANCES": {
+              "polygon": [[0.0, 0.55], [0.5, 0.55], [0.5, 1.0], [0.0, 1.0]],
+              "sku_zone": "PERFUME"
+            },
+            "WELLNESS": {
+              "polygon": [[0.5, 0.55], [1.0, 0.55], [1.0, 1.0], [0.5, 1.0]],
+              "sku_zone": "SUPPLEMENTS"
+            }
+          }
+        },
+        "CAM_BILLING_01": {
+          "clip_file": "billing_area.mp4",
+          "clip_file_legacy": "CAM 1.mp4",
+          "type": "billing",
+          "description": "Billing counter and queue area camera",
+          "zones": {
+            "BILLING_COUNTER": {
+              "polygon": [[0.3, 0.0], [0.7, 0.0], [0.7, 0.45], [0.3, 0.45]],
+              "sku_zone": null,
+              "is_billing": true
+            },
+            "BILLING_QUEUE": {
+              "polygon": [[0.1, 0.45], [0.9, 0.45], [0.9, 1.0], [0.1, 1.0]],
+              "sku_zone": null,
+              "is_billing_queue": true
+            },
+            "IMPULSE_BUYS": {
+              "polygon": [[0.0, 0.0], [0.3, 0.0], [0.3, 1.0], [0.0, 1.0]],
+              "sku_zone": "CANDY_SNACKS"
+            }
+          }
+        }
+      }
+    },
+    "store_1076": {
+      "name": "Purplle Store Mumbai 1076",
+      "city": "Mumbai",
+      "open_hours": { "start": "10:00", "end": "22:00" },
+      "cameras": {
+        "CAM_ENTRY_01": {
+          "clip_file": "cam1_entry.mp4",
+          "type": "entry_exit",
+          "description": "Main entry camera (cam1)",
+          "entry_line_y_ratio": 0.55,
+          "zones": {
+            "ENTRY_THRESHOLD": {
+              "polygon": [[0.0, 0.45], [1.0, 0.45], [1.0, 0.65], [0.0, 0.65]],
+              "sku_zone": null,
+              "is_entry_zone": true
+            }
+          }
+        },
+        "CAM_FLOOR_01": {
+          "clip_file": "cam2_floor.mp4",
+          "type": "main_floor",
+          "description": "Main floor zone camera",
+          "zones": {
+            "Left Shelf": {
+              "zone_id": "PURPLLE_MUM_1076_Z01",
+              "polygon": [[0.0, 0.0], [0.4, 0.0], [0.4, 0.6], [0.0, 0.6]],
+              "sku_zone": "SHELF",
+              "is_revenue_zone": true
+            },
+            "Center Display": {
+              "zone_id": "PURPLLE_MUM_1076_Z02",
+              "polygon": [[0.3, 0.2], [0.7, 0.2], [0.7, 0.8], [0.3, 0.8]],
+              "sku_zone": "DISPLAY",
+              "is_revenue_zone": true
+            },
+            "Lipstick Aisle": {
+              "zone_id": "PURPLLE_MUM_1076_Z03",
+              "polygon": [[0.6, 0.0], [1.0, 0.0], [1.0, 0.6], [0.6, 0.6]],
+              "sku_zone": "SHELF",
+              "is_revenue_zone": true
+            }
+          }
+        },
+        "CAM_BILLING_01": {
+          "clip_file": "cam6_billing.mp4",
+          "type": "billing",
+          "description": "Billing counter queue camera",
+          "zones": {
+            "Billing Counter Queue": {
+              "zone_id": "PURPLLE_MUM_1076_Z_BILLING_01",
+              "polygon": [[0.2, 0.0], [0.8, 0.0], [0.8, 1.0], [0.2, 1.0]],
+              "sku_zone": null,
+              "is_billing": true,
+              "is_billing_queue": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

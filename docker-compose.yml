@@ -1,0 +1,23 @@
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: apex-store-intelligence
+    ports:
+      - "${PORT:-8000}:8000"
+    volumes:
+      # Mount data directory so events.jsonl from pipeline is accessible to the API
+      - ./data:/app/data
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-sqlite:///./data/store_intelligence.db}
+      - POS_CSV_PATH=${POS_CSV_PATH:-data/pos_transactions.csv}
+      - PORT=${PORT:-8000}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:${PORT:-8000}/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped

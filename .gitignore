@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.spec
+pip-wheel-metadata/
+
+# Environments
+.env
+.venv
+venv/
+env/
+ENV/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Database (do not commit real DB — events.jsonl is the source of truth)
+data/store_intelligence.db
+
+# YOLO weights — large binary files, auto-downloaded on first run by ultralytics
+*.pt
+
+# Logs
+*.log
+fake_output.jsonl
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.production.local
+
+# Railway / Vercel
+.vercel/
+.railway/
+
+# Large resources
+Store 1*/
+Store 2*/
+POS*.csv
+sample_events*.jsonl

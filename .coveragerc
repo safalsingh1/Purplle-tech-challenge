@@ -1,0 +1,19 @@
+[run]
+source = app
+omit =
+    app/__pycache__/*
+
+[report]
+exclude_lines =
+    # Standard exclusions
+    pragma: no cover
+    def __repr__
+    if TYPE_CHECKING:
+    raise NotImplementedError
+    # Exclude the simulation manager (untestable without live video)
+    class SimulationManager:
+    async def _run\(self\):
+    async def _sync_yolo_speed
+    async def generate_mjpeg_stream
+    async def generate_sim_mjpeg_stream
+    async def lifespan
