@@ -61,3 +61,6 @@ Store 1*/
 Store 2*/
 POS*.csv
 sample_events*.jsonl
+
+# Internal debug/scratch scripts — not part of submission
+scratch/
