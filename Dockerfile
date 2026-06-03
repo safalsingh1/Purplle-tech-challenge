@@ -30,7 +30,6 @@ RUN pip install --no-cache-dir ultralytics>=8.0.0
 # Copy application code
 COPY app/ ./app/
 COPY data/ ./data/
-COPY yolov8n.pt ./
 
 # Create data directories
 RUN mkdir -p data/camera_clips
