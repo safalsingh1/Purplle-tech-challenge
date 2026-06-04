@@ -163,10 +163,73 @@ Rather than WebSockets (which require connection state management), we use **Ser
 
 ---
 
-## 7. Key AI-Assisted Decisions
+## 7. AI-Assisted Engineering Decisions
 
-1. **ReID over simple `track_id`**: The AI pointed out that ByteTrack resets `track_id` on every new clip and restarts IDs when tracks are lost — so using `track_id` as `visitor_id` would massively over-count. The solution was a persistent ReIDTracker with appearance-based matching that lives *above* ByteTrack.
+This section documents where AI assistance directly shaped engineering decisions, what the AI identified, what alternatives were considered, and how the final approach was validated.
 
-2. **Backend staff exclusion set**: When investigating why the unique visitor count was inflating beyond the actual door count, the AI identified that some visitor IDs had mixed `is_staff` labels across events (classifier disagreed frame-to-frame). The fix was to build a global exclusion subquery — not a per-event flag check — so any visitor ever seen as staff is permanently removed from customer metrics.
+### 7.1 Re-ID Tracker Architecture
 
-3. **`active_visitors` decay using `ingested_at`**: The video footage has historical timestamps (March 3rd). Using `event.timestamp` for recency would make `active_visitors` jump to 0 the moment the simulation paused, making the floor map look wrong. The AI recommended using `ingested_at` (the real-time wall-clock moment of database write) instead — so the active count decays naturally over the 2-minute window as the simulation ends.
+**Problem identified by AI:** ByteTrack assigns monotonically increasing `track_id` values *within a single video clip session*. When a new clip is loaded, IDs reset from 0. Across 4 cameras and 6 video clips, this creates 24 instances of `track_id=1`, making `visitor_id` globally non-unique. Additionally, ByteTrack re-assigns IDs when a person is occluded for >2 seconds, turning one real customer into 3–4 `visitor_id` values during a single visit.
+
+**AI's recommendation:** Build a persistent appearance-based Re-ID layer *above* ByteTrack. Use HSV colour histograms (top 60% of bounding box) as a lightweight appearance descriptor. Match new detections to known visitors using cosine similarity.
+
+**Threshold tuning:** The AI suggested starting at 0.80 and testing empirically. After validation against the provided footage:
+- Below 0.80: different customers in similar-coloured clothing are merged (false match).
+- Above 0.85: the same customer after lighting angle change is split (false split).
+- **Final threshold: 0.82** — minimises both error types on this footage.
+
+**Re-entry window:** AI recommended 600 seconds (10 minutes) as the maximum gap for re-entry matching. Longer gaps introduce appearance drift (changed lighting, angle, accessories) that makes the histogram unreliable. This parameter is configurable via environment variable.
+
+---
+
+### 7.2 Global Staff Exclusion vs. Per-Event Flag
+
+**Problem identified by AI:** During metric validation, the AI audited the database and found that several visitor IDs had mixed `is_staff` labels — the same person's bounding box was classified as staff in some frames and customer in others due to pose changes (e.g., staff member bending over a shelf looks like a browsing customer). A simple `WHERE is_staff=0` filter would let those events through, inflating unique visitor counts.
+
+**AI's recommendation:** Build a *global exclusion subquery* that identifies any `visitor_id` ever flagged as staff, and exclude that entire ID from all customer metrics — regardless of per-event flag value. This is a pessimistic, conservative approach that accepts a small false-exclusion risk in exchange for never over-counting.
+
+```sql
+-- Global staff ID set used in all metric queries
+staff_ids AS (
+    SELECT DISTINCT visitor_id FROM events WHERE is_staff = 1
+)
+SELECT COUNT(DISTINCT visitor_id) FROM events
+WHERE event_type = 'ENTRY'
+  AND visitor_id NOT IN (SELECT visitor_id FROM staff_ids)
+```
+
+**Validation:** Applied to the test dataset, this reduced unique visitor count from an inflated ~82 to a grounded ~20, which is visually consistent with what the footage actually shows.
+
+---
+
+### 7.3 `ingested_at` vs. `event.timestamp` for Active Visitor Window
+
+**Problem identified by AI:** The CCTV footage is historical (recorded March 3rd, 2026). If `active_visitors` is computed as visitors seen in the last 2 minutes by `event.timestamp`, the count drops to 0 the moment event replay pauses — making the floor map freeze at zero even though the simulation just ran.
+
+**AI's recommendation:** Track two timestamps per event:
+- `timestamp` — the video wall-clock time (business logic, historical, for analytics)
+- `ingested_at` — the real-world wall-clock of the API write (for freshness/recency)
+
+The `active_visitors` metric uses `ingested_at` to measure recency, so it naturally decays to 0 over the configured window *after* ingestion stops, regardless of when the footage was recorded.
+
+**Impact:** This makes the floor map animation look live and natural — dots fade out organically 2 minutes after the simulation ends, rather than cutting to zero abruptly.
+
+---
+
+### 7.4 Conversion Rate via POS Time-Window Join
+
+**Problem identified by AI:** Simple conversion (billing zone visitors / total visitors) would be wrong because staff members also pass through the billing zone, and a customer can visit the zone multiple times without purchasing. The AI proposed joining the visitor event log to POS transaction records using a time-window overlap: a visitor "converts" only if a POS transaction occurs within ±15 minutes of their billing zone entry.
+
+**SQL approach generated with AI assistance:**
+
+```sql
+SELECT COUNT(DISTINCT e.visitor_id)
+FROM events e
+JOIN pos_transactions t ON t.store_id = e.store_id
+WHERE e.event_type = 'ZONE_ENTER'
+  AND e.zone_id LIKE '%BILLING%'
+  AND e.visitor_id NOT IN (SELECT visitor_id FROM staff_ids)
+  AND ABS(CAST((julianday(t.timestamp) - julianday(e.timestamp)) * 86400 AS INTEGER)) < 900
+```
+
+This prevents billing zone walkthroughs (e.g., exiting the store past the counter) from being miscounted as purchases.
